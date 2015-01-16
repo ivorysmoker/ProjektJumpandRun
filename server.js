@@ -3,6 +3,7 @@ var express = require('express'),
     server = require('http').createServer(app),
     io = require('socket.io').listen(server),
     OnlineUsers = {};
+	Users = [];
 	BenutzerIp = [];
 	BenutzerIpName = [];
 server.listen(1338);
@@ -17,7 +18,7 @@ app.get('/' ,function(req, res){
 });
 
 app.get('/JumpGo', function (req, res) {
-    res.sendFile(path.resolve('index.html'));
+     res.sendFile(path.join(__dirname, '/', 'index.html'));
 });
 
 io.sockets.on('connection', function (socket) {
