@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	</head>
+        <body>
+			<div style="background-color: black; width: 500px; height: 500px;">
+			<canvas id="PlayerBall" style="width: 500px; height: 500px; position: absolute;"></canvas>
+			<canvas id="Player1" style="width: 500px; height: 500px; position: absolute;"></canvas>
+			<canvas id="NPC" style="width: 500px; height: 500px; position: absolute;"></canvas>
+			</div>
+		</body>
+		<script>
+		jQuery(function($){
+			$(document).keypress(function(event) {
+			if(event.which === 65 || event.which === 97) {
+			console.log("a wurde gedrückt"); 
+			
+			var e=document.getElementById("Player1");
+			var canv=e.getContext("2d");
+			canv.clearRect(XCoords,YCoords,50,5);
+			/*canv.font="50px Arial";
+			canv.background = "green";*/
+			if(XCoords !== 0){
+			XCoords--;
+			XCoords--;
+			canv.fillRect(XCoords,YCoords,50,5);
+			}else{
+			canv.fillRect(XCoords,YCoords,50,5);
+			}
+			
+			}else if(event.which === 83 || event.which === 115){
+			console.log("s wurde gedrückt"); 
+			
+			var e=document.getElementById("Player1");
+			var canv=e.getContext("2d");
+			canv.clearRect(XCoords,YCoords,50,5);
+			/*canv.font="50px Arial";
+			canv.background = "green";*/
+			if(YCoords < 125){
+			YCoords++;
+			YCoords++;
+			canv.fillRect(XCoords,YCoords,50,5);
+			}else{
+			canv.fillRect(XCoords,YCoords,50,5);
+			}
+			
+			}else if(event.which === 68 || event.which === 100){
+			console.log("d wurde gedrückt"); 
+			
+			var e=document.getElementById("Player1");
+			var canv=e.getContext("2d");
+			canv.clearRect(XCoords,YCoords,50,5);
+			/*canv.font="50px Arial";
+			canv.background = "green";*/
+			if(XCoords < 250){
+			XCoords++;
+			XCoords++;
+			canv.fillRect(XCoords,YCoords,50,5);	
+			}else{
+			canv.fillRect(XCoords,YCoords,50,5);	
+			}
+
+			}else if(event.which === 87 || event.which === 119){
+			console.log("w wurde gedrückt"); 
+			
+			var e=document.getElementById("Player1");
+			var canv=e.getContext("2d");
+			canv.clearRect(XCoords,YCoords,50,5);
+			/*canv.font="50px Arial";
+			canv.background = "green";*/
+			if(YCoords !== 0){
+			YCoords--;
+			YCoords--;
+			canv.fillRect(XCoords,YCoords,50,5);
+			}else{
+			canv.fillRect(XCoords,YCoords,50,5);
+			}
+			
+			}
+			});
+		});
+//Coords müsste man immer serverseitig prüfen / Cheat schutz
+var YCoords = 125;
+var XCoords = 0;
+
+//Sobald ein Player Connectet adde Canvas Element for Player
+var e=document.getElementById("Player1");
+var canv=e.getContext("2d");
+canv.font="50px Arial";
+//canv.strokeStyle = "green";
+//canv.strokeRect(0,0,50,50);
+  canv.fillStyle = "rgb(200,0,0)";
+  canv.fillRect (0, 125, 50, 5);
+		
+	
+//SPielerball
+BallXCoords = 100; //Start
+BallYCoords = 0; // max 150
+NPCX = 0;
+NPCY = 10;
+//Gamesettings
+Locked = 0;
+PlayerRounds = 0;
+NPCLocked = 0;
+var e=document.getElementById("PlayerBall");
+var canv=e.getContext("2d");
+canv.font="50px Arial";
+//canv.strokeStyle = "green";
+//canv.strokeRect(0,0,50,50);
+  canv.fillStyle = "rgb(200,0,0)";
+  canv.fillRect (BallXCoords, BallYCoords, 10, 5);
+			//for(x=1; x > 0; x++)
+			var x = 0;
+			var i = 0;  
+			function BallMovment(){
+				var e=document.getElementById("PlayerBall");
+				var canv=e.getContext("2d");
+				 canv.fillStyle = "rgb(200,0,0)";
+				//console.log(BallYCoords+YCoords+BallXCoords+XCoords+"Coords");
+				//Mache eine for schleife und prüfe ob der ball sich auf den angegeben pos noch befindet
+				//Checking = XCoords + 10; // 40 schleifen
+				for(Checking=0; Checking < 50; Checking++){
+					Breite = XCoords + Checking;
+					if(BallYCoords == YCoords && BallXCoords == Breite){
+						console.log("Koords: "+BallXCoords+" Balken: "+XCoords);
+						AuftritsZone = BallXCoords - XCoords;
+							console.log("Der Ball ist auf der gleichen Höhe!");
+							Locked = 1;
+							canv.clearRect(BallXCoords,BallYCoords,10, 5);	
+							BallYCoords--;
+							canv.fillRect(BallXCoords,BallYCoords,10,5);
+					}
+				}
+				if(BallYCoords < 150 && Locked == 0){
+				canv.clearRect(BallXCoords,BallYCoords,10, 5);
+				BallYCoords++;
+				canv.fillRect(BallXCoords,BallYCoords,10,5);
+				}else if(BallYCoords > 140){
+				//Ball ist durchgekommen - spawn a new
+					canv.clearRect(BallXCoords,BallYCoords,10, 5);
+					BallXCoords = 100;
+					BallYCoords = 0;
+					canv.fillRect(BallXCoords,BallYCoords,10,5);
+					
+				}else if(BallYCoords == 0 && Locked == 1){
+					Locked = 0;
+					PlayerRounds++;
+					//Ball kam oben an vergebe pkt an spieler
+					//nach X anzahl NPC INC
+				}else{
+					if(BallXCoords <= 0){
+						canv.clearRect(BallXCoords,BallYCoords,10, 5);	
+						BallXCoords = 300;
+						canv.fillRect(BallXCoords,BallYCoords,10,5);
+					}else if(BallXCoords > 300){
+						canv.clearRect(BallXCoords,BallYCoords,10, 5);	
+						BallXCoords = 1;
+						canv.fillRect(BallXCoords,BallYCoords,10,5);
+					}else{
+						if(AuftritsZone < 20){
+							canv.clearRect(BallXCoords,BallYCoords,10, 5);	
+							BallYCoords--;
+							BallXCoords--;
+							CollationEffect();
+							canv.fillRect(BallXCoords,BallYCoords,10,5);
+						}else if(AuftritsZone < 50 && AuftritsZone > 30){
+							canv.clearRect(BallXCoords,BallYCoords,10, 5);	
+							BallYCoords--;
+							BallXCoords++;
+							CollationEffect();
+							canv.fillRect(BallXCoords,BallYCoords,10,5);
+						}else{
+							canv.clearRect(BallXCoords,BallYCoords,10, 5);	
+							BallYCoords--;
+							CollationEffect();
+							canv.fillRect(BallXCoords,BallYCoords,10,5);
+						}
+					}
+				}
+				
+				if(PlayerRounds == 5 || NPCLocked == 1){
+					if(NPCLocked == 1){
+						canv.clearRect(NPCX,NPCY,10, 5);
+						NPCY++;
+						canv.fillRect(NPCX,NPCY,10,5);
+						if(NPCY > 140){
+							canv.clearRect(NPCX,NPCY,10, 5);
+							NPCLocked = 2;
+						}
+					}else if(NPCLocked == 0){
+						var e=document.getElementById("NPC");
+						var canv=e.getContext("2d");
+						canv.fillStyle = "rgb(300,0,0)";
+						canv.fillRect(NPCX,NPCY,10,5);
+						NPCLocked = 1;
+					}
+				}
+				
+			} // END of BallMovment
+			function CollationEffect(){
+				canv.fillStyle = "rgb(224,225,255)";
+			}
+			function myLoop () {          
+				myVar = setTimeout(function () {  
+					BallMovment();   
+					i++;                  
+					if (i < 999999999999999999999999999999999999999999999999999999999999999) {            
+						myLoop();             
+					}                   
+					
+				}, 1000.0/30.0)
+			}
+			myLoop();                      //  start the loop
+</script>
+</html>
