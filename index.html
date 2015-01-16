@@ -9,90 +9,73 @@
 	</head>
         <body>
 			<div style="background-color: black; width: 500px; height: 500px;">
-			<canvas id="Player" width="500px" height="500px"></canvas>
+			<canvas id="Player" width="500px" height="500px" style="position: absolute;"></canvas>
+			<canvas id="Player2" width="500px" height="500px" style="position: absolute;"></canvas>
 			</div>
 		</body>
 		<script>
 		jQuery(function($){
-		var YCoords;
-		var XCoords;
 		var socket = io.connect();
-		socket.on('PlayerSpawn', function(PlayerCooordsX, PlayerCooordsY){
-					YCoords = PlayerCooordsY;
-					XCoords = PlayerCooordsX;
+socket.on('PlayerSpawn', function(PlayerCooordsX, PlayerCooordsY, PlayerPosition){
+		console.log(PlayerPosition);
+					if(PlayerPosition == 1){
 					var e=document.getElementById("Player");
 					var canv=e.getContext("2d");
+					}else if(PlayerPosition == 2){
+					var e=document.getElementById("Player2");
+					var canv=e.getContext("2d");
+					}
 					canv.fillStyle = "rgb(200,0,0)";
-					canv.fillRect (XCoords, YCoords, 50, 50);
-		});
-			
-			$(document).keypress(function(event) {
+					canv.fillRect (PlayerCooordsX, PlayerCooordsY, 50, 50);
+});
+socket.on('PlayerMovment', function(PlayerCooordsX, PlayerCooordsY, PlayerPosition, Direction){
+console.log(PlayerPosition+" Hat Movment ausgelöst");
+	if(PlayerPosition == 1){
+			var e=document.getElementById("Player");
+			var canv=e.getContext("2d");
+		}else if(PlayerPosition == 2){
+			var e=document.getElementById("Player2");
+			var canv=e.getContext("2d");
+		}
+		if(Direction == "Left"){
+				PlayerCooordsX = PlayerCooordsX + 1;
+				canv.clearRect(PlayerCooordsX,PlayerCooordsY,50,50);
+				PlayerCooordsX = PlayerCooordsX - 1;
+		}else if(Direction == "Down"){
+				PlayerCooordsY--;
+				canv.clearRect(PlayerCooordsX,PlayerCooordsY,50,50);
+				PlayerCooordsY++;
+		}else if(Direction == "Right"){
+				PlayerCooordsX--;
+				canv.clearRect(PlayerCooordsX,PlayerCooordsY,50,50);
+				PlayerCooordsX++;
+		}else if(Direction == "Jump"){
+				PlayerCooordsY++;
+				canv.clearRect(PlayerCooordsX,PlayerCooordsY,50,50);
+				PlayerCooordsY--;
+		}
+		canv.fillRect(PlayerCooordsX,PlayerCooordsY,50,50);
+});			
+$(document).keypress(function(event) {
 			if(event.which === 65 || event.which === 97) {
-			console.log("a wurde gedrückt"); 
-			var e=document.getElementById("Player");
-			var canv=e.getContext("2d");
-			canv.clearRect(XCoords,YCoords,50,50);
-			/*canv.font="50px Arial";
-			canv.background = "green";*/
-			if(XCoords !== 0){
-			XCoords--;
-			XCoords--;
-			canv.fillRect(XCoords,YCoords,50,50);
-			}else{
-			canv.fillRect(XCoords,YCoords,50,50);
-			}
-			
+			//Move Left
+			socket.emit("PlayerMovment", "Left");
 			}else if(event.which === 83 || event.which === 115){
-			console.log("s wurde gedrückt"); 
-			
-			var e=document.getElementById("Player");
-			var canv=e.getContext("2d");
-			canv.clearRect(XCoords,YCoords,50,50);
-			/*canv.font="50px Arial";
-			canv.background = "green";*/
-			if(YCoords < 125){
-			YCoords++;
-			YCoords++;
-			canv.fillRect(XCoords,YCoords,50,50);
-			}else{
-			canv.fillRect(XCoords,YCoords,50,50);
-			}
-			
+			//Move Down
+			socket.emit("PlayerMovment", "Down");
 			}else if(event.which === 68 || event.which === 100){
+			//Move Right
 			console.log("d wurde gedrückt"); 
-			
-			var e=document.getElementById("Player");
-			var canv=e.getContext("2d");
-			canv.clearRect(XCoords,YCoords,50,50);
-			/*canv.font="50px Arial";
-			canv.background = "green";*/
-			if(XCoords < 250){
-			XCoords++;
-			XCoords++;
-			canv.fillRect(XCoords,YCoords,50,50);	
-			}else{
-			canv.fillRect(XCoords,YCoords,50,50);	
-			}
-
+			socket.emit("PlayerMovment", "Right");
 			}else if(event.which === 87 || event.which === 119){
+			//Move - Jump
 			console.log("w wurde gedrückt"); 
-			
-			var e=document.getElementById("Player");
-			var canv=e.getContext("2d");
-			canv.clearRect(XCoords,YCoords,50,50);
-			/*canv.font="50px Arial";
-			canv.background = "green";*/
-			if(YCoords !== 0){
-			YCoords--;
-			YCoords--;
-			canv.fillRect(XCoords,YCoords,50,50);
-			}else{
-			canv.fillRect(XCoords,YCoords,50,50);
+			socket.emit("PlayerMovment", "Jump");
 			}
+});
 			
-			}
+			
 			});
-		});
 			/*function myLoop () {          
 				myVar = setTimeout(function () {  
 					BallMovment();   

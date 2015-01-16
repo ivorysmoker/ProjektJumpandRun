@@ -21,14 +21,17 @@ app.get('/JumpGo', function (req, res) {
 });
 
 io.sockets.on('connection', function (socket) {
-var clientIp = socket.request.connection.remoteAddress;
+var clientIp = socket.request.connection.remoteAddress; // Liefer die IP
 var Vorhanden = BenutzerIp.indexOf(clientIp);
 if(Vorhanden >= 0){
-var pos = BenutzerIp.indexOf(clientIp);
 console.log("Ein Benutzer ist eingelogt oder wiedergekehrt");
+socket.nickname = BenutzerIpName[Vorhanden];
 OnlineUsers[socket.nickname] = socket;
 //Setze den Player Start Punkt
-socket.emit("PlayerSpawn", 15, 15);
+socket.XCoords = 15;
+socket.YCoords = 15;
+socket.PlayerOrder = BenutzerIpName.length;
+io.sockets.emit("PlayerSpawn", socket.XCoords, socket.YCoords, BenutzerIpName.length);
 //updateNicknamesOnline();
 //Falls der Spieler einen Disconnect hat trage hier alle wichtigen ereignise von diesem Spieler ein und lade diese auf den socket neu. Save-Data
 }
@@ -46,4 +49,29 @@ socket.emit("PlayerSpawn", 15, 15);
        }
       // UserIsBack();
     });
+	socket.on('PlayerMovment', function(Direction){ 
+		console.log("PlayerMovment Cast"+Direction);
+		//Alte + neue position
+		if(Direction === "Left"){
+			if(socket.XCoords > 0){
+				socket.XCoords = socket.XCoords - 1; // Geschwindikeit Left
+				io.sockets.emit('PlayerMovment', socket.XCoords, socket.YCoords, socket.PlayerOrder, "Left");
+			}
+		}else if(Direction === "Down"){
+			if(socket.YCoords > 0 && socket.YCoords < 500){
+				socket.YCoords = socket.YCoords + 1; // Geschwindikeit Left
+				io.sockets.emit('PlayerMovment', socket.XCoords, socket.YCoords, socket.PlayerOrder, "Down");
+			}
+		}else if(Direction === "Right"){
+			if(socket.XCoords > 0 && socket.XCoords < 500){
+				socket.XCoords = socket.XCoords + 1; // Geschwindikeit Left
+				io.sockets.emit('PlayerMovment', socket.XCoords, socket.YCoords, socket.PlayerOrder, "Right");
+			}
+		}else if(Direction === "Jump"){
+			if(socket.YCoords > 0 && socket.YCoords < 500){
+				socket.YCoords = socket.YCoords - 1; // Geschwindikeit Left
+				io.sockets.emit('PlayerMovment', socket.XCoords, socket.YCoords, socket.PlayerOrder, "Jump");
+			}
+		}
+	});	
 });	
