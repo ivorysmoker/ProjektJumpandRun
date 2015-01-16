@@ -25,15 +25,16 @@ var clientIp = socket.request.connection.remoteAddress;
 var Vorhanden = BenutzerIp.indexOf(clientIp);
 if(Vorhanden >= 0){
 var pos = BenutzerIp.indexOf(clientIp);
-console.log("Ein Benutzer ist wiedergekehrt");
+console.log("Ein Benutzer ist eingelogt oder wiedergekehrt");
 OnlineUsers[socket.nickname] = socket;
+//Setze den Player Start Punkt
 socket.emit("PlayerSpawn", 15, 15);
 //updateNicknamesOnline();
 //Falls der Spieler einen Disconnect hat trage hier alle wichtigen ereignise von diesem Spieler ein und lade diese auf den socket neu. Save-Data
 }
 	socket.on('Login', function(data, callback){ 
        if(data in OnlineUsers){
-	   console.log("Benutzer Existiert schon!");
+		console.log("Benutzer Existiert schon!");
            //io.sockets.emit('ServerMessege', socket.nickname+': <span class="online">ist wieder online</span>'+'</br>');
        }else{
 	    console.log("Benutzer angelegt!");
@@ -42,7 +43,6 @@ socket.emit("PlayerSpawn", 15, 15);
 		BenutzerIp.push(clientIp);
 		BenutzerIpName.push(socket.nickname);
 		socket.emit("Weiterleitung");
-		//PlayerSpawn
        }
       // UserIsBack();
     });

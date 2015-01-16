@@ -14,79 +14,80 @@
 		</body>
 		<script>
 		jQuery(function($){
+		var YCoords;
+		var XCoords;
 		var socket = io.connect();
-		socket.on('PlayerSpawn', function(PlayerCooordsY, PlayerCooordsX){
-					var YCoords = PlayerCooordsY;
-					var XCoords = PlayerCooordsX;
+		socket.on('PlayerSpawn', function(PlayerCooordsX, PlayerCooordsY){
+					YCoords = PlayerCooordsY;
+					XCoords = PlayerCooordsX;
 					var e=document.getElementById("Player");
 					var canv=e.getContext("2d");
 					canv.fillStyle = "rgb(200,0,0)";
-					canv.fillRect (YCoords, XCoords, 50, 50);
+					canv.fillRect (XCoords, YCoords, 50, 50);
 		});
 			
 			$(document).keypress(function(event) {
 			if(event.which === 65 || event.which === 97) {
 			console.log("a wurde gedrückt"); 
-			
-			var e=document.getElementById("Player1");
+			var e=document.getElementById("Player");
 			var canv=e.getContext("2d");
-			canv.clearRect(XCoords,YCoords,50,5);
+			canv.clearRect(XCoords,YCoords,50,50);
 			/*canv.font="50px Arial";
 			canv.background = "green";*/
 			if(XCoords !== 0){
 			XCoords--;
 			XCoords--;
-			canv.fillRect(XCoords,YCoords,50,5);
+			canv.fillRect(XCoords,YCoords,50,50);
 			}else{
-			canv.fillRect(XCoords,YCoords,50,5);
+			canv.fillRect(XCoords,YCoords,50,50);
 			}
 			
 			}else if(event.which === 83 || event.which === 115){
 			console.log("s wurde gedrückt"); 
 			
-			var e=document.getElementById("Player1");
+			var e=document.getElementById("Player");
 			var canv=e.getContext("2d");
-			canv.clearRect(XCoords,YCoords,50,5);
+			canv.clearRect(XCoords,YCoords,50,50);
 			/*canv.font="50px Arial";
 			canv.background = "green";*/
 			if(YCoords < 125){
 			YCoords++;
 			YCoords++;
-			canv.fillRect(XCoords,YCoords,50,5);
+			canv.fillRect(XCoords,YCoords,50,50);
 			}else{
-			canv.fillRect(XCoords,YCoords,50,5);
+			canv.fillRect(XCoords,YCoords,50,50);
 			}
 			
 			}else if(event.which === 68 || event.which === 100){
 			console.log("d wurde gedrückt"); 
 			
-			var e=document.getElementById("Player1");
+			var e=document.getElementById("Player");
 			var canv=e.getContext("2d");
-			canv.clearRect(XCoords,YCoords,50,5);
+			canv.clearRect(XCoords,YCoords,50,50);
 			/*canv.font="50px Arial";
 			canv.background = "green";*/
 			if(XCoords < 250){
 			XCoords++;
 			XCoords++;
-			canv.fillRect(XCoords,YCoords,50,5);	
+			canv.fillRect(XCoords,YCoords,50,50);	
 			}else{
-			canv.fillRect(XCoords,YCoords,50,5);	
+			canv.fillRect(XCoords,YCoords,50,50);	
 			}
 
 			}else if(event.which === 87 || event.which === 119){
 			console.log("w wurde gedrückt"); 
 			
-			var e=document.getElementById("Player1");
+			var e=document.getElementById("Player");
 			var canv=e.getContext("2d");
-			canv.clearRect(XCoords,YCoords,50,5);
+			canv.clearRect(XCoords,YCoords,50,50);
 			/*canv.font="50px Arial";
 			canv.background = "green";*/
 			if(YCoords !== 0){
 			YCoords--;
 			YCoords--;
-			canv.fillRect(XCoords,YCoords,50,5);
+			canv.fillRect(XCoords,YCoords,50,50);
 			}else{
-			canv.fillRect(XCoords,YCoords,50,5);
+			canv.fillRect(XCoords,YCoords,50,50);
 			}
 			
 			}
