@@ -2,6 +2,6 @@ Nodejs Plugins
 
 socket.io
 express
-mysql
+mys
 
-gut w‰re ein json packet, habe aber zuwenig Ahnung von Json.
+gut w√§re ein json packet, habe aber zuwenig Ahnung von Json.
