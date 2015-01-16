@@ -26,7 +26,8 @@ var clientIp = socket.request.connection.remoteAddress; // Liefer die IP
 var Vorhanden = BenutzerIp.indexOf(clientIp);
 if(Vorhanden >= 0){
 console.log("Ein Benutzer ist eingelogt oder wiedergekehrt");
-socket.nickname = BenutzerIpName[Vorhanden];
+var pos = BenutzerIp.indexOf(clientIp);
+socket.nickname = BenutzerIpName[pos];
 OnlineUsers[socket.nickname] = socket;
 //Setze den Player Start Punkt
 socket.XCoords = 15;
