@@ -1,0 +1,7 @@
+Nodejs Plugins
+
+socket.io
+express
+mysql
+
+gut wäre ein json packet, habe aber zuwenig Ahnung von Json.
