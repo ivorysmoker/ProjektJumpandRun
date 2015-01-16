@@ -18,7 +18,7 @@ app.get('/' ,function(req, res){
 });
 
 app.get('/JumpGo', function (req, res) {
-     res.sendFile(path.join(__dirname, '/', 'index.html'));
+     res.sendFile(path.resolve('index.html'));
 });
 
 io.sockets.on('connection', function (socket) {
