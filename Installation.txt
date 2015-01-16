@@ -2,6 +2,6 @@ Nodejs Plugins
 
 socket.io
 express
-mys
+mysql
 
 gut wäre ein json packet, habe aber zuwenig Ahnung von Json.
