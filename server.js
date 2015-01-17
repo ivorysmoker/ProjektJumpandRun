@@ -14,19 +14,14 @@ var path = require('path');
 // wenn der Pfad / aufgerufen wird
 app.get('/', function(req, res) {
     // statische Dateien ausliefern
-    res.sendFile(__dirname + '/views/home.html');
+    res.sendFile(__dirname + '/views/index.html');
 });
 
 app.use(express.static(__dirname, 'css'));
 app.use(express.static(__dirname, 'js'));
 
-app.get('/login', function(req, res) {
-    // statische Dateien ausliefern
-    res.sendFile(__dirname + '/views/login.html');
-});
-
 app.get('/JumpGo', function(req, res) {
-    res.sendFile(__dirname + '/views/index.html');
+    res.sendFile(__dirname + '/views/game.html');
 });
 
 var PhysikNumber = 0;	

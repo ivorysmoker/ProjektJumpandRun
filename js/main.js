@@ -11,5 +11,4 @@ $(document).ready(function() {
     socket.on('Weiterleitung', function() {
         location.href = "JumpGo";
     });
-    $(document).foundation();
 });
