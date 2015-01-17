@@ -104,7 +104,7 @@ io.sockets.emit("PlayerSpawn", socket.XCoords, socket.YCoords, BenutzerIpName.le
 					console.log("Physik Trigger");
 					PhysikNumber++;    
 						socket.emit("PlayerMovment");
-					if (PhysikNumber < 999999999999999999999999999999999999999999999999999999999999999) {            
+					if (PhysikNumber > 0) {            
 						PhsyikTrigger();             
 					}                   
 					
