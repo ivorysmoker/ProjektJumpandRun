@@ -38,7 +38,7 @@ console.log(PlayerPosition+" Hat Movment ausgelöst");
 			var canv=e.getContext("2d");
 		}
 		if(Direction == "Left"){
-				PlayerCooordsX = PlayerCooordsX + 1;
+				PlayerCooordsX = PlayerCooordsX + 1; // Sende Old Positionen Mit
 				canv.clearRect(PlayerCooordsX,PlayerCooordsY,50,50);
 				PlayerCooordsX = PlayerCooordsX - 1;
 		}else if(Direction == "Down"){

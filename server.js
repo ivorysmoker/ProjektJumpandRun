@@ -20,7 +20,8 @@ app.get('/' ,function(req, res){
 app.get('/JumpGo', function (req, res) {
      res.sendFile(__dirname + '/index.html');
 });
-
+ 
+var PhysikNumber = 0;			
 io.sockets.on('connection', function (socket) {
 var clientIp = socket.request.connection.remoteAddress; // Liefer die IP
 var Vorhanden = BenutzerIp.indexOf(clientIp);
@@ -86,4 +87,22 @@ io.sockets.emit("PlayerSpawn", socket.XCoords, socket.YCoords, BenutzerIpName.le
 			}
 		}
 	});	
+	/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+	++++++++++++++++++++++++++++++++++++++++++++++++FUNCTIONS++++++++++++++++++++++++++++++++++++++ 
+	 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+	function PhsyikTrigger () { 
+				if(typeof myVar !== 'undefined'){
+					clearTimeout(myVar);
+				}
+				myVar = setTimeout(function () {  
+					console.log("Physik Trigger");
+					PhysikNumber++;    
+						socket.emit("PlayerMovment");
+					if (PhysikNumber < 999999999999999999999999999999999999999999999999999999999999999) {            
+						PhsyikTrigger();             
+					}                   
+					
+				}, 10000) //1000.0/30.0 30 fps +-
+			}
+	PhsyikTrigger(); 		
 });	
