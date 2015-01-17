@@ -15,16 +15,16 @@ var path = require('path');
 
 app.get('/' ,function(req, res){
 	// statische Dateien ausliefern
-	res.sendFile(__dirname + '/home.html');
+	res.sendFile(__dirname + '/views/home.html');
 });
 
 app.get('/login' ,function(req, res){
 	// statische Dateien ausliefern
-	res.sendFile(__dirname + '/login.html');
+	res.sendFile(__dirname + '/views/login.html');
 });
 
 app.get('/JumpGo', function (req, res) {
-     res.sendFile(__dirname + '/index.html');
+     res.sendFile(__dirname + '/views/index.html');
 });
  
 var PhysikNumber = 0;			
