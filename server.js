@@ -15,14 +15,19 @@ var path = require('path');
 // wenn der Pfad / aufgerufen wird
 app.get('/', function(req, res) {
     // statische Dateien ausliefern
-    res.sendFile(__dirname + '/views/index.html');
+    res.sendFile(__dirname + '/views/home.html');
 });
 
 app.use(express.static(__dirname, 'css'));
 app.use(express.static(__dirname, 'js'));
 
+app.get('/login', function(req, res) {
+    // statische Dateien ausliefern
+    res.sendFile(__dirname + '/views/login.html');
+});
+
 app.get('/JumpGo', function(req, res) {
-    res.sendFile(__dirname + '/views/game.html');
+    res.sendFile(__dirname + '/views/index.html');
 });
 
 var PhysikNumber = 0;	
@@ -107,8 +112,8 @@ io.sockets.emit("PlayerSpawn", socket.XCoords, socket.YCoords, BenutzerIpName.le
            if(ind !== -1){
                var name = msg.substring(0, ind);
                var msg = msg.substring(ind + 1);
-               if(name in users){
-                   users[name].emit('whisper', {msg: msg, nick: socket.nickname});
+               if(name in OnlineUsers){
+                   OnlineUsers[name].emit('whisper', {msg: msg, nick: socket.nickname});
                    socket.emit('whisper', {msg: msg, nick: socket.nickname});
                           console.log("Whisper!");       
                } else{

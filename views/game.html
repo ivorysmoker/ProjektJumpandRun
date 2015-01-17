@@ -6,18 +6,56 @@
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
         <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+		<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
 	</head>
         <body>
 			<div style="background-color: blanchedalmond; width: 500px; height: 500px;">
-			<canvas id="Player" width="500px" height="500px" style="position: absolute;"></canvas>
-			<canvas id="Player2" width="500px" height="500px" style="position: absolute;"></canvas>
-			<canvas id="Map" width="500px" height="500px" style="position: absolute;"></canvas>
+				<canvas id="Player" width="500px" height="500px" style="position: absolute;"></canvas>
+				<canvas id="Player2" width="500px" height="500px" style="position: absolute;"></canvas>
+				<canvas id="Map" width="500px" height="500px" style="position: absolute;"></canvas>
 			</div>
+			<div class="chatdiv">
+				<div id="chat" style="float: left; height:300px; width: 500px; border: 1px solid silver; overflow: scroll;"></div>
+				<form id="SendForm">
+				<input id="Message">
+				<input type="submit">
+			</form></div>
 		</body>
 		<script>
 		jQuery(function($){
 		var socket = io.connect();
-		//Map Objekte
+		/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+		++++++++++++++++++++++++++++++++++++++++++++++++CHAT FUNCTIONS AND SOCKETS+++++++++++++++++++++++
+		+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+		$('#SendForm').submit(function(e){
+                e.preventDefault();
+                socket.emit('Data', $('#Message').val(), function(data){
+                 $("#chat").append('<span class="error"><b>'+ data + '<span></br>');
+                //socket.emit('Ressource', $Ressource.html());
+                // Var A wird um + erhöht, übergabe P2 ist falsch...
+                });
+                //$("#chat").scrollTop($("#chat")[0].scrollHeight);
+                $("#chat").animate({scrollTop:$("#chat")[0].scrollHeight}, 500);
+                $('#Message').val('');
+                //Server sendet hier wirde empfangen (Socket.on)
+                //Chat Socket
+		});
+		socket.on('ServerMessege', function(data){
+                     $("#chat").append('<span class="error">'+data+'</span></br>');
+                     $("#chat").animate({scrollTop:$("#chat")[0].scrollHeight}, 500);
+                });
+		socket.on('message', function(data){
+                     $("#chat").append('<span class="msg"><b>'+ data.nick + '</b>: ' + data.msg + '<span></br>');
+                     $("#chat").animate({scrollTop:$("#chat")[0].scrollHeight}, 500);
+        });
+        socket.on('whisper', function(data){
+                    $("#chat").append('<span class="whisper"><b>'+ data.nick + '</b>: ' + data.msg + '<span></br>');
+                    $("#chat").animate({scrollTop:$("#chat")[0].scrollHeight}, 500);
+        });
+		/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+		++++++++++++++++++++++++++++++++++++++++++++++++GAME SOCKETS+++++++++++++++++++++++++++++++++++++
+		+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+		//Testing for Server Site Objekt Creator
 		var e=document.getElementById("Player");
 		var canv=e.getContext("2d");
 		canv.fillStyle = "rgb(200,0,0)";
@@ -60,6 +98,16 @@ console.log(PlayerPosition+" Hat Movment ausgelöst");
 				PlayerCooordsY++;
 				canv.clearRect(PlayerCooordsX,PlayerCooordsY,50,50);
 				PlayerCooordsY--;
+		}else if(Direction == "JumpLeft"){
+				//X UND Y COORDS BEHANDELN!
+				PlayerCooordsY++;
+				canv.clearRect(PlayerCooordsX,PlayerCooordsY,50,50);
+				PlayerCooordsY--;
+		}else if(Direction == "JumpRight"){
+				//X UND Y COORDS BEHANDELN!
+				PlayerCooordsY++;
+				canv.clearRect(PlayerCooordsX,PlayerCooordsY,50,50);
+				PlayerCooordsY--;
 		}
 		canv.fillStyle = "rgb(200,0,0)";
 		canv.fillRect(PlayerCooordsX,PlayerCooordsY,50,50);
@@ -67,18 +115,22 @@ console.log(PlayerPosition+" Hat Movment ausgelöst");
 $(document).keypress(function(event) {
 			if(event.which === 65 || event.which === 97) {
 			//Move Left
-			socket.emit("PlayerMovment", "Left");
+				socket.emit("PlayerMovment", "Left");
 			}else if(event.which === 83 || event.which === 115){
 			//Move Down
-			socket.emit("PlayerMovment", "Down");
+				socket.emit("PlayerMovment", "Down");
 			}else if(event.which === 68 || event.which === 100){
 			//Move Right
-			console.log("d wurde gedrückt"); 
-			socket.emit("PlayerMovment", "Right");
+				socket.emit("PlayerMovment", "Right");
 			}else if(event.which === 87 || event.which === 119){
 			//Move - Jump
-			console.log("w wurde gedrückt"); 
-			socket.emit("PlayerMovment", "Jump");
+				socket.emit("PlayerMovment", "Jump");
+			}else if(event.which === 87 || event.which === 119 || event.which ===  65 || event.which === 97){
+			//Move - JumpLeft
+				socket.emit("PlayerMovment", "JumpLeft");
+			}else if(event.which === 87 || event.which === 119 || event.which ===  68 || event.which === 100){
+			//Move - JumpRight
+				socket.emit("PlayerMovment", "JumpRight");
 			}
 });
 			
