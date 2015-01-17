@@ -19,7 +19,7 @@ app.get('/', function(req, res) {
 
 app.use(express.static(__dirname, 'css'));
 app.use(express.static(__dirname, 'js'));
-server neu starten
+
 app.get('/login', function(req, res) {
     // statische Dateien ausliefern
     res.sendFile(__dirname + '/views/login.html');
