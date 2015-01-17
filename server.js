@@ -24,7 +24,7 @@ app.get('/login', function(req, res) {
     // statische Dateien ausliefern
     res.sendFile(__dirname + '/views/login.html');
 });
-<<<<<<< HEAD
+
 app.get('/JumpGo', function(req, res) {
     res.sendFile(__dirname + '/views/index.html');
 });
