@@ -8,7 +8,7 @@
         <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
 	</head>
         <body>
-			<div style="background-color: black; width: 500px; height: 500px;">
+			<div style="background-color: blanchedalmond; width: 500px; height: 500px;">
 			<canvas id="Player" width="500px" height="500px" style="position: absolute;"></canvas>
 			<canvas id="Player2" width="500px" height="500px" style="position: absolute;"></canvas>
 			</div>
@@ -54,6 +54,7 @@ console.log(PlayerPosition+" Hat Movment ausgelöst");
 				canv.clearRect(PlayerCooordsX,PlayerCooordsY,50,50);
 				PlayerCooordsY--;
 		}
+		canv.fillStyle = "rgb(200,0,0)";
 		canv.fillRect(PlayerCooordsX,PlayerCooordsY,50,50);
 });			
 $(document).keypress(function(event) {

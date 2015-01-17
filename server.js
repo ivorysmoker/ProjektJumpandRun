@@ -6,7 +6,7 @@ var express = require('express'),
 	Users = [];
 	BenutzerIp = [];
 	BenutzerIpName = [];
-server.listen(1338);
+server.listen(1337);
 console.log("Server Online");
 var mysql = require('mysql');
 var fs = require('fs');
@@ -18,7 +18,7 @@ app.get('/' ,function(req, res){
 });
 
 app.get('/JumpGo', function (req, res) {
-     res.sendFile(path.resolve('index.html'));
+     res.sendFile(__dirname + '/index.html');
 });
 
 io.sockets.on('connection', function (socket) {
@@ -29,6 +29,7 @@ console.log("Ein Benutzer ist eingelogt oder wiedergekehrt");
 var pos = BenutzerIp.indexOf(clientIp);
 socket.nickname = BenutzerIpName[pos];
 OnlineUsers[socket.nickname] = socket;
+console.log(OnlineUsers[socket.nickname]);
 //Setze den Player Start Punkt
 socket.XCoords = 15;
 socket.YCoords = 15;
@@ -45,8 +46,12 @@ io.sockets.emit("PlayerSpawn", socket.XCoords, socket.YCoords, BenutzerIpName.le
 	    console.log("Benutzer angelegt!");
 		socket.nickname = data;
 		OnlineUsers[socket.nickname] = socket;
+		console.log(OnlineUsers[socket.nickname]);
 		BenutzerIp.push(clientIp);
 		BenutzerIpName.push(socket.nickname);
+		socket.XCoords = 15;
+		socket.YCoords = 15;
+		socket.PlayerOrder = BenutzerIpName.length;
 		socket.emit("Weiterleitung");
        }
       // UserIsBack();
@@ -55,24 +60,29 @@ io.sockets.emit("PlayerSpawn", socket.XCoords, socket.YCoords, BenutzerIpName.le
 		console.log("PlayerMovment Cast"+Direction);
 		//Alte + neue position
 		if(Direction === "Left"){
+			console.log(socket.nickname+socket.PlayerOrder);
 			if(socket.XCoords > 0){
-				socket.XCoords = socket.XCoords - 1; // Geschwindikeit Left
+				socket.XCoords = socket.XCoords - 1; // Geschwindigkeit Left
 				io.sockets.emit('PlayerMovment', socket.XCoords, socket.YCoords, socket.PlayerOrder, "Left");
+				console.log(socket.nickname+" PlayerMove Position: X: "+socket.XCoords+" Y:"+socket.YCoords);
 			}
 		}else if(Direction === "Down"){
 			if(socket.YCoords > 0 && socket.YCoords < 500){
-				socket.YCoords = socket.YCoords + 1; // Geschwindikeit Left
+				socket.YCoords = socket.YCoords + 1; // Geschwindigkeit Down
 				io.sockets.emit('PlayerMovment', socket.XCoords, socket.YCoords, socket.PlayerOrder, "Down");
+				console.log(socket.nickname+" PlayerMove Position: X: "+socket.XCoords+" Y:"+socket.YCoords);
 			}
 		}else if(Direction === "Right"){
 			if(socket.XCoords > 0 && socket.XCoords < 500){
-				socket.XCoords = socket.XCoords + 1; // Geschwindikeit Left
+				socket.XCoords = socket.XCoords + 1; // Geschwindigkeit Right
 				io.sockets.emit('PlayerMovment', socket.XCoords, socket.YCoords, socket.PlayerOrder, "Right");
+				console.log(socket.nickname+" PlayerMove Position: X: "+socket.XCoords+" Y:"+socket.YCoords);
 			}
 		}else if(Direction === "Jump"){
 			if(socket.YCoords > 0 && socket.YCoords < 500){
-				socket.YCoords = socket.YCoords - 1; // Geschwindikeit Left
+				socket.YCoords = socket.YCoords - 1; // Geschwindigkeit Jump
 				io.sockets.emit('PlayerMovment', socket.XCoords, socket.YCoords, socket.PlayerOrder, "Jump");
+				console.log(socket.nickname+" PlayerMove Position: X: "+socket.XCoords+" Y:"+socket.YCoords);
 			}
 		}
 	});	
