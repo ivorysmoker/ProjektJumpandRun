@@ -112,7 +112,7 @@ io.sockets.on('connection', function(socket) {
     }
     PhsyikTrigger();
 });
-=======
+
  
 var PhysikNumber = 0;	
 var PlayerCollection = 0;		
@@ -219,4 +219,4 @@ io.sockets.emit("PlayerSpawn", socket.XCoords, socket.YCoords, BenutzerIpName.le
 			}
 	PhsyikTrigger(); 		
 });	
->>>>>>> origin/master
+
