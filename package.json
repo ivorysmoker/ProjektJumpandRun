@@ -1,0 +1,31 @@
+{
+  "name": "Package",
+  "version": "1.0.0",
+  "description": "Package",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.10.6",
+    "npm": "^1.4.28",
+    "open": "^0.0.5",
+    "socket.io": "^1.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ivorysmoker/ProjektJumpandRun.git"
+  },
+  "keywords": [
+    "Modules"
+  ],
+  "author": "Raphi,Yannik",
+  "license": "MIT",
+  
+  "bugs": {
+    "url": "https://github.com/ivorysmoker/ProjektJumpandRun/issues"
+  },
+  "homepage": "https://github.com/ivorysmoker/ProjektJumpandRun"
+}
