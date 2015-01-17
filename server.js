@@ -17,7 +17,8 @@ app.get('/', function(req, res) {
     res.sendFile(__dirname + '/views/home.html');
 });
 
-
+app.use(express.static(__dirname, 'css'));
+app.use(express.static(__dirname, 'js'));
 
 app.get('/login', function(req, res) {
     // statische Dateien ausliefern
