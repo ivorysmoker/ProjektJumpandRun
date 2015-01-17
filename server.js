@@ -12,7 +12,13 @@ var mysql = require('mysql');
 var fs = require('fs');
 var path = require('path');
 // wenn der Pfad / aufgerufen wird
+
 app.get('/' ,function(req, res){
+	// statische Dateien ausliefern
+	res.sendFile(__dirname + '/home.html');
+});
+
+app.get('/login' ,function(req, res){
 	// statische Dateien ausliefern
 	res.sendFile(__dirname + '/login.html');
 });
