@@ -11,6 +11,7 @@ console.log("Server Online");
 //var mysql = require('mysql');
 var fs = require('fs');
 var path = require('path');
+
 // wenn der Pfad / aufgerufen wird
 app.get('/', function(req, res) {
     // statische Dateien ausliefern
