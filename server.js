@@ -19,7 +19,7 @@ app.get('/', function(req, res) {
 
 app.use(express.static(__dirname, 'css'));
 app.use(express.static(__dirname, 'js'));
-
+server neu starten
 app.get('/login', function(req, res) {
     // statische Dateien ausliefern
     res.sendFile(__dirname + '/views/login.html');
@@ -102,6 +102,35 @@ io.sockets.emit("PlayerSpawn", socket.XCoords, socket.YCoords, BenutzerIpName.le
 			}
 		}
 	});	
+	socket.on('Data', function(data, callback){ 
+       var msg = data.trim();
+       if(msg.substr(0,3) === '/w '){
+           msg = msg.substr(3);
+           console.log(msg);
+           var ind = msg.indexOf(' ');
+           if(ind !== -1){
+               var name = msg.substring(0, ind);
+               var msg = msg.substring(ind + 1);
+               if(name in users){
+                   users[name].emit('whisper', {msg: msg, nick: socket.nickname});
+                   socket.emit('whisper', {msg: msg, nick: socket.nickname});
+                          console.log("Whisper!");       
+               } else{
+                   callback('Dieser Benutzer existiert nicht');
+               }
+           }else{
+               callback('Bitte eine Nachricht eingeben!');
+           }
+       }else{
+           if(msg !== ""){
+       io.sockets.emit('message', {msg: msg, nick: socket.nickname});
+           }else{
+               callback('Bitte eine Nachricht eingeben!');
+           }
+       }
+	   
+         //socket.broadcast.emit('new message', data);
+    });  //var socketId = socket.id
 	/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 	++++++++++++++++++++++++++++++++++++++++++++++++FUNCTIONS++++++++++++++++++++++++++++++++++++++ 
 	 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
