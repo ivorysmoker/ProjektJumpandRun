@@ -102,51 +102,111 @@ console.log(PlayerPosition+" Hat Movment ausgelöst");
 		}else if(Direction == "JumpLeft"){
 				//X UND Y COORDS BEHANDELN!
 				PlayerCooordsY++;
+				PlayerCooordsX++;
 				canv.clearRect(PlayerCooordsX,PlayerCooordsY,50,50);
 				PlayerCooordsY--;
+				PlayerCooordsX--;
 		}else if(Direction == "JumpRight"){
 				//X UND Y COORDS BEHANDELN!
 				PlayerCooordsY++;
+				PlayerCooordsX--;
 				canv.clearRect(PlayerCooordsX,PlayerCooordsY,50,50);
 				PlayerCooordsY--;
+				PlayerCooordsX++;
 		}
 		canv.fillStyle = "rgb(200,0,0)";
 		canv.fillRect(PlayerCooordsX,PlayerCooordsY,50,50);
-});			
-$(document).keypress(function(event) {
-			if(event.which === 65 || event.which === 97) {
-			//Move Left
+});	
+var keys = {};
+
+/*
+$(document).keydown(function (e) {
+    keys[e.which] = true;
+	console.log(e);
+});
+
+$(document).keyup(function (e) {
+    delete keys[e.which];
+});	*/	
+
+Keys = [];
+$(document).keydown(function(event) {
+//Speichere den angeforderten Key
+if( Keys.indexOf(event.keyCode) > 0 ){
+console.log("Existiert bereits");
+console.log(Keys);
+}else{
+Keys.push(event.keyCode);
+console.log(Keys);
+}
+	//Keys in array laden, bei jedem aufruf dieses array abfragen, somit kann ermittelt werden ob noch eine weitere Taste gedrückt wurde!
+	//Else Anweisungen noch schreiben
+	//Prüfen ob der Wert im Array schon exiistiert wen ja schreibe nicht ins array. (scheint noch buggy zu sein checken)
+			if(event.which === 65 || Keys[0] === 65 || Keys[1] === 65 || Keys[2] === 65 || Keys[3] === 65 || Keys[4] === 65) {
+			//Move Left 65
 				socket.emit("PlayerMovment", "Left");
-			}else if(event.which === 83 || event.which === 115){
+			}
+			if(event.which === 83){
 			//Move Down
 				socket.emit("PlayerMovment", "Down");
-			}else if(event.which === 68 || event.which === 100){
+			}
+			if(event.which === 68 || Keys[0] === 68 || Keys[1] === 68 || Keys[2] === 68 || Keys[3] === 68 || Keys[4] === 68){
 			//Move Right
 				socket.emit("PlayerMovment", "Right");
-			}else if(event.which === 87 || event.which === 119){
+			}
+			if(event.which === 87 || Keys[0] === 87 || Keys[1] === 87 || Keys[2] === 87 || Keys[3] === 87 || Keys[4] === 87){
 			//Move - Jump
 				socket.emit("PlayerMovment", "Jump");
-			}else if(event.which === 87 || event.which === 119 || event.which ===  65 || event.which === 97){
+			}
+			if(Keys[0] === 81 || Keys[1] === 81 || Keys[2] === 81 || Keys[3] === 81 || Keys[4] === 81 && Keys[0] === 87 || Keys[1] === 87 || Keys[2] === 87 || Keys[3] === 87 || Keys[4] === 87){
 			//Move - JumpLeft
+				console.log("SPRING IN EINEM WINKEL! JUMPLEFT");
 				socket.emit("PlayerMovment", "JumpLeft");
-			}else if(event.which === 87 || event.which === 119 || event.which ===  68 || event.which === 100){
+			}
+			if(event.which ===  69 && event.which === 87){
 			//Move - JumpRight
 				socket.emit("PlayerMovment", "JumpRight");
+				console.log("SPRING IN EINEM WINKEL! JUMPRIGHT");
 			}
 });
-			
-			
-			});
-			/*function myLoop () {          
-				myVar = setTimeout(function () {  
-					BallMovment();   
-					i++;                  
-					if (i < 999999999999999999999999999999999999999999999999999999999999999) {            
-						myLoop();             
-					}                   
-					
-				}, 1000.0/30.0)
+$(document).keyup(function(event) {
+//DELETE Taste
+	var removeItem = event.keyCode;
+
+	Keys = jQuery.grep(Keys, function(value) {
+		return value != removeItem;
+	});
+
+});			
+/*var map = []; // Or you could call it "key"
+onkeydown = onkeyup = function(event){
+    event = event || event; // to deal with IE
+    map[event.keyCode] = event.type == 'keydown';
+    insert conditional here
+			if(map[65]) {
+			//Move Left 65
+				socket.emit("PlayerMovment", "Left");
+			}else if(map[83]){
+			//Move Down
+				socket.emit("PlayerMovment", "Down");
+			}else if(map[68]){
+			//Move Right
+				socket.emit("PlayerMovment", "Right");
+			}else if(map[87]){
+			//Move - Jump
+				socket.emit("PlayerMovment", "Jump");
+			}else if(map[81] && map[87]){
+			//Move - JumpLeft
+				console.log("SPRING IN EINEM WINKEL! JUMPLEFT");
+				socket.emit("PlayerMovment", "JumpLeft");
+			}else if(map[69] && map[87]){
+			//Move - JumpRight
+				socket.emit("PlayerMovment", "JumpRight");
+				console.log("SPRING IN EINEM WINKEL! JUMPRIGHT");
 			}
-			myLoop();   */                   //  start the loop
+}*/
+			
+			
+			});                   //  start the loop
 </script>
 </html>

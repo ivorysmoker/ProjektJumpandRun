@@ -6,7 +6,7 @@ var express = require('express'),
 Users = [];
 BenutzerIp = [];
 BenutzerIpName = [];
-server.listen(1337);
+server.listen(1338);
 console.log("Server Online");
 //var mysql = require('mysql');
 var fs = require('fs');
@@ -96,11 +96,29 @@ io.sockets.emit("PlayerSpawn", socket.XCoords, socket.YCoords, BenutzerIpName.le
 				console.log(socket.nickname+" PlayerMove Position: X: "+socket.XCoords+" Y:"+socket.YCoords);
 				}
 			}
+		}else if(Direction === "JumpLeft"){
+			if(socket.YCoords > 350 && socket.YCoords < 500 && socket.XCoords < 500 && socket.XCoords > 0){
+				for(x=0; x < 50; x++){
+				socket.YCoords = socket.YCoords - 1; // Geschwindigkeit Jump
+				socket.XCoords = socket.XCoords - 1; // Geschwindigkeit Jump
+				io.sockets.emit('PlayerMovment', socket.XCoords, socket.YCoords, socket.PlayerOrder, "JumpLeft");
+				console.log(socket.nickname+" PlayerMove Position: X: "+socket.XCoords+" Y:"+socket.YCoords);
+				}
+			}
+		}else if(Direction === "JumpRight"){
+			if(socket.YCoords > 350 && socket.YCoords < 500 && socket.XCoords < 500 && socket.XCoords > 0){
+				for(x=0; x < 50; x++){
+				socket.YCoords = socket.YCoords - 1; // Geschwindigkeit Jump
+				socket.XCoords = socket.XCoords + 1; // Geschwindigkeit Jump
+				io.sockets.emit('PlayerMovment', socket.XCoords, socket.YCoords, socket.PlayerOrder, "JumpRight");
+				console.log(socket.nickname+" PlayerMove Position: X: "+socket.XCoords+" Y:"+socket.YCoords);
+				}
+			}
 		}
 	});	
 	socket.on('Data', function(data, callback){ 
        var msg = data.trim();
-       if(msg.substr(0,3) === '/w '){
+       if(msg.substr(0,3) === '/w ' || msg.substr(0,9) === '/whisper '){
            msg = msg.substr(3);
            console.log(msg);
            var ind = msg.indexOf(' ');
