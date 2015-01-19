@@ -116,57 +116,33 @@ console.log(PlayerPosition+" Hat Movment ausgelöst");
 		}
 		canv.fillStyle = "rgb(200,0,0)";
 		canv.fillRect(PlayerCooordsX,PlayerCooordsY,50,50);
-});	
-var keys = {};
-
-/*
-$(document).keydown(function (e) {
-    keys[e.which] = true;
-	console.log(e);
-});
-
-$(document).keyup(function (e) {
-    delete keys[e.which];
-});	*/	
+});		
 
 Keys = [];
 $(document).keydown(function(event) {
 //Speichere den angeforderten Key
-if( Keys.indexOf(event.keyCode) > 0 ){
-console.log("Existiert bereits");
-console.log(Keys);
-}else{
+if( Keys.indexOf(event.keyCode) == -1 ){
 Keys.push(event.keyCode);
-console.log(Keys);
+console.log("Pushing to Array" +Keys)
 }
-	//Keys in array laden, bei jedem aufruf dieses array abfragen, somit kann ermittelt werden ob noch eine weitere Taste gedrückt wurde!
-	//Else Anweisungen noch schreiben
-	//Prüfen ob der Wert im Array schon exiistiert wen ja schreibe nicht ins array. (scheint noch buggy zu sein checken)
-			if(event.which === 65 || Keys[0] === 65 || Keys[1] === 65 || Keys[2] === 65 || Keys[3] === 65 || Keys[4] === 65) {
-			//Move Left 65
-				socket.emit("PlayerMovment", "Left");
-			}
-			if(event.which === 83){
-			//Move Down
-				socket.emit("PlayerMovment", "Down");
-			}
-			if(event.which === 68 || Keys[0] === 68 || Keys[1] === 68 || Keys[2] === 68 || Keys[3] === 68 || Keys[4] === 68){
-			//Move Right
-				socket.emit("PlayerMovment", "Right");
-			}
-			if(event.which === 87 || Keys[0] === 87 || Keys[1] === 87 || Keys[2] === 87 || Keys[3] === 87 || Keys[4] === 87){
-			//Move - Jump
-				socket.emit("PlayerMovment", "Jump");
-			}
-			if(Keys[0] === 81 || Keys[1] === 81 || Keys[2] === 81 || Keys[3] === 81 || Keys[4] === 81 && Keys[0] === 87 || Keys[1] === 87 || Keys[2] === 87 || Keys[3] === 87 || Keys[4] === 87){
+	//Rechts hoch ist noch buggy, ansonst scheints bisher gut zu funktionieren.
+			if((Keys[0] === 65 || Keys[1] === 65 || Keys[2] === 65 || Keys[3] === 65 || Keys[4] === 65) && (Keys[0] === 87 || Keys[1] === 87 || Keys[2] === 87 || Keys[3] === 87 || Keys[4] === 87)){
 			//Move - JumpLeft
-				console.log("SPRING IN EINEM WINKEL! JUMPLEFT");
+				console.log("SPRING IN EINEM WINKEL! JUMPLEFT"+ Keys);
 				socket.emit("PlayerMovment", "JumpLeft");
-			}
-			if(event.which ===  69 && event.which === 87){
+			}else if((Keys[0] === 68 || Keys[1] === 68 || Keys[2] === 68 || Keys[3] === 68 || Keys[4] === 68) && (Keys[0] === 87 || Keys[1] === 87 || Keys[2] === 87 || Keys[3] === 87 || Keys[4] === 87)){
 			//Move - JumpRight
 				socket.emit("PlayerMovment", "JumpRight");
-				console.log("SPRING IN EINEM WINKEL! JUMPRIGHT");
+				console.log("SPRING IN EINEM WINKEL! JUMPRIGHT"+ Keys );
+			}else if(event.which === 65) { //Taste a or A = 65
+				socket.emit("PlayerMovment", "Left");
+			}else if(event.which === 83){ //Taste s or S = 83
+				socket.emit("PlayerMovment", "Down");
+			}else if(event.which === 68){ //Taste d or D = 83
+				socket.emit("PlayerMovment", "Right");
+			}else if(event.which === 87){ //Taste w or W = 87
+			//Move - Jump
+				socket.emit("PlayerMovment", "Jump");
 			}
 });
 $(document).keyup(function(event) {
@@ -178,35 +154,6 @@ $(document).keyup(function(event) {
 	});
 
 });			
-/*var map = []; // Or you could call it "key"
-onkeydown = onkeyup = function(event){
-    event = event || event; // to deal with IE
-    map[event.keyCode] = event.type == 'keydown';
-    insert conditional here
-			if(map[65]) {
-			//Move Left 65
-				socket.emit("PlayerMovment", "Left");
-			}else if(map[83]){
-			//Move Down
-				socket.emit("PlayerMovment", "Down");
-			}else if(map[68]){
-			//Move Right
-				socket.emit("PlayerMovment", "Right");
-			}else if(map[87]){
-			//Move - Jump
-				socket.emit("PlayerMovment", "Jump");
-			}else if(map[81] && map[87]){
-			//Move - JumpLeft
-				console.log("SPRING IN EINEM WINKEL! JUMPLEFT");
-				socket.emit("PlayerMovment", "JumpLeft");
-			}else if(map[69] && map[87]){
-			//Move - JumpRight
-				socket.emit("PlayerMovment", "JumpRight");
-				console.log("SPRING IN EINEM WINKEL! JUMPRIGHT");
-			}
-}*/
-			
-			
-			});                   //  start the loop
+});                   //  Jquery Closed
 </script>
 </html>
