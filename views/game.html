@@ -57,10 +57,15 @@
 		++++++++++++++++++++++++++++++++++++++++++++++++GAME SOCKETS+++++++++++++++++++++++++++++++++++++
 		+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 		//Testing for Server Site Objekt Creator
-		var e=document.getElementById("Player");
+		var e=document.getElementById("Map");
 		var canv=e.getContext("2d");
 		canv.fillStyle = "rgb(200,0,0)";
 		canv.fillRect (0, 450, 400, 30);
+		
+		var e=document.getElementById("Map");
+		var canv=e.getContext("2d");
+		canv.fillStyle = "rgb(200,0,0)";
+		canv.fillRect (0, 350, 200, 30);
 					
 socket.on('PlayerSpawn', function(PlayerCooordsX, PlayerCooordsY, PlayerPosition){
 		console.log(PlayerPosition);

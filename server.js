@@ -71,6 +71,10 @@ io.sockets.emit("PlayerSpawn", socket.XCoords, socket.YCoords, BenutzerIpName.le
 				for(x=0; x < 2; x++){
 				socket.XCoords = socket.XCoords - 1; // Geschwindigkeit Left
 				io.sockets.emit('PlayerMovment', socket.XCoords, socket.YCoords, socket.PlayerOrder, "Left");
+				if(socket.YCoords > 360 && socket.YCoords < 380 && socket.XCoords > 0 && socket.XCoords < 200){
+					console.log("Kollision");
+					return;
+				}
 				console.log(socket.nickname+" PlayerMove Position: X: "+socket.XCoords+" Y:"+socket.YCoords);
 				}
 			}
@@ -78,6 +82,10 @@ io.sockets.emit("PlayerSpawn", socket.XCoords, socket.YCoords, BenutzerIpName.le
 			if(socket.YCoords > 0 && socket.YCoords < 400){
 				socket.YCoords = socket.YCoords + 1; // Geschwindigkeit Down
 				io.sockets.emit('PlayerMovment', socket.XCoords, socket.YCoords, socket.PlayerOrder, "Down");
+				if(socket.YCoords > 360 && socket.YCoords < 380 && socket.XCoords > 0 && socket.XCoords < 200){
+					console.log("Kollision");
+					return;
+				}
 				console.log(socket.nickname+" PlayerMove Position: X: "+socket.XCoords+" Y:"+socket.YCoords);
 			}
 		}else if(Direction === "Right"){
@@ -85,6 +93,10 @@ io.sockets.emit("PlayerSpawn", socket.XCoords, socket.YCoords, BenutzerIpName.le
 				for(x=0; x < 2; x++){
 				socket.XCoords = socket.XCoords + 1; // Geschwindigkeit Right
 				io.sockets.emit('PlayerMovment', socket.XCoords, socket.YCoords, socket.PlayerOrder, "Right");
+				if(socket.YCoords > 360 && socket.YCoords < 380 && socket.XCoords > 0 && socket.XCoords < 200){
+					console.log("Kollision");
+					return;
+				}
 				console.log(socket.nickname+" PlayerMove Position: X: "+socket.XCoords+" Y:"+socket.YCoords);
 				}
 			}
@@ -93,6 +105,11 @@ io.sockets.emit("PlayerSpawn", socket.XCoords, socket.YCoords, BenutzerIpName.le
 				for(x=0; x < 50; x++){
 				socket.YCoords = socket.YCoords - 1; // Geschwindigkeit Jump
 				io.sockets.emit('PlayerMovment', socket.XCoords, socket.YCoords, socket.PlayerOrder, "Jump");
+				//Map Kollision INCLUDE MAP FILE
+				if(socket.YCoords > 360 && socket.YCoords < 380 && socket.XCoords > 0 && socket.XCoords < 200){
+					console.log("Kollision");
+					return;
+				}
 				console.log(socket.nickname+" PlayerMove Position: X: "+socket.XCoords+" Y:"+socket.YCoords);
 				}
 			}
@@ -102,7 +119,20 @@ io.sockets.emit("PlayerSpawn", socket.XCoords, socket.YCoords, BenutzerIpName.le
 				socket.YCoords = socket.YCoords - 1; // Geschwindigkeit Jump
 				socket.XCoords = socket.XCoords - 1; // Geschwindigkeit Jump
 				io.sockets.emit('PlayerMovment', socket.XCoords, socket.YCoords, socket.PlayerOrder, "JumpLeft");
+				if((socket.YCoords > 360 && socket.YCoords < 380) && (socket.XCoords > 0 && socket.XCoords < 200)){
+					console.log("Kollision");
+					return;
+				}
 				console.log(socket.nickname+" PlayerMove Position: X: "+socket.XCoords+" Y:"+socket.YCoords);
+				}
+				for(x=0; x < 20; x++){
+				socket.XCoords = socket.XCoords - 1; // Geschwindigkeit Jump
+				io.sockets.emit('PlayerMovment', socket.XCoords, socket.YCoords, socket.PlayerOrder, "JumpLeft");
+				if((socket.YCoords > 360 && socket.YCoords < 380) && (socket.XCoords > 0 && socket.XCoords < 200)){
+					console.log("Kollision");
+					return;
+				}
+				console.log(socket.nickname+" PlayerMove Position: X: "+socket.XCoords+" Y:"+socket.YCoords);				
 				}
 			}
 		}else if(Direction === "JumpRight"){
@@ -111,7 +141,19 @@ io.sockets.emit("PlayerSpawn", socket.XCoords, socket.YCoords, BenutzerIpName.le
 				socket.YCoords = socket.YCoords - 1; // Geschwindigkeit Jump
 				socket.XCoords = socket.XCoords + 1; // Geschwindigkeit Jump
 				io.sockets.emit('PlayerMovment', socket.XCoords, socket.YCoords, socket.PlayerOrder, "JumpRight");
+				if((socket.YCoords > 360 && socket.YCoords < 380) && (socket.XCoords > 0 && socket.XCoords < 200)){
+					console.log("Kollision");
+					return;
+				}
 				console.log(socket.nickname+" PlayerMove Position: X: "+socket.XCoords+" Y:"+socket.YCoords);
+				}
+				for(x=0; x < 20; x++){
+					socket.XCoords = socket.XCoords + 1; // Geschwindigkeit Jump
+					io.sockets.emit('PlayerMovment', socket.XCoords, socket.YCoords, socket.PlayerOrder, "JumpRight");
+				if((socket.YCoords > 360 && socket.YCoords < 380) && (socket.XCoords > 0 && socket.XCoords < 200)){
+					console.log("Kollision");
+					return;
+				}
 				}
 			}
 		}
@@ -156,14 +198,20 @@ io.sockets.emit("PlayerSpawn", socket.XCoords, socket.YCoords, BenutzerIpName.le
 					//console.log("Physik Trigger");
 					PhysikNumber++;
 					if(typeof BenutzerIpName[0] !== 'undefined'){
-						if(OnlineUsers[BenutzerIpName[0]].YCoords < 400){
+					
+					if(OnlineUsers[BenutzerIpName[0]].YCoords == 320 && OnlineUsers[BenutzerIpName[0]].XCoords > 0 && socket.XCoords < 200){
+					console.log("Phsyik Schutz");
+					}else if(OnlineUsers[BenutzerIpName[0]].YCoords < 400){
 						//console.log(OnlineUsers[BenutzerIpName[0]].YCoords);
 							OnlineUsers[BenutzerIpName[0]].YCoords++;	
 							io.sockets.emit("PlayerMovment", OnlineUsers[BenutzerIpName[0]].XCoords, OnlineUsers[BenutzerIpName[0]].YCoords, 1 ,"Down");
+							
 						}
 					}
 					if(typeof BenutzerIpName[1] !== 'undefined'){
-						if(OnlineUsers[BenutzerIpName[1]].YCoords < 400){
+						if(OnlineUsers[BenutzerIpName[0]].YCoords == 320 && OnlineUsers[BenutzerIpName[0]].XCoords > 0 && socket.XCoords < 200){
+						console.log("Kollision Schutz");
+						}else if(OnlineUsers[BenutzerIpName[1]].YCoords < 400){
 						OnlineUsers[BenutzerIpName[1]].YCoords++;	
 						io.sockets.emit("PlayerMovment", OnlineUsers[BenutzerIpName[1]].XCoords, OnlineUsers[BenutzerIpName[1]].YCoords, 2 ,"Down");
 						}
