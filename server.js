@@ -69,13 +69,18 @@ io.sockets.emit("PlayerSpawn", socket.XCoords, socket.YCoords, BenutzerIpName.le
 			console.log(socket.nickname+socket.PlayerOrder);
 			if(socket.XCoords > 0){
 				for(x=0; x < 2; x++){
+					if(socket.XCoords == 200 && socket.YCoords > 350 && socket.YCoords < 380){ //ADD 5
+						console.log("This is fucking TRUE!!!!!!!!!!");
+						return;
+					}
+					if(socket.YCoords > 360 && socket.YCoords < 380 && socket.XCoords > 0 && socket.XCoords > 200){
+						return;
+					}
+					//sonst...
 				socket.XCoords = socket.XCoords - 1; // Geschwindigkeit Left
 				io.sockets.emit('PlayerMovment', socket.XCoords, socket.YCoords, socket.PlayerOrder, "Left");
-				if(socket.YCoords > 360 && socket.YCoords < 380 && socket.XCoords > 0 && socket.XCoords < 200){
-					console.log("Kollision");
-					return;
-				}
 				console.log(socket.nickname+" PlayerMove Position: X: "+socket.XCoords+" Y:"+socket.YCoords);
+				
 				}
 			}
 		}else if(Direction === "Down"){
@@ -93,7 +98,7 @@ io.sockets.emit("PlayerSpawn", socket.XCoords, socket.YCoords, BenutzerIpName.le
 				for(x=0; x < 2; x++){
 				socket.XCoords = socket.XCoords + 1; // Geschwindigkeit Right
 				io.sockets.emit('PlayerMovment', socket.XCoords, socket.YCoords, socket.PlayerOrder, "Right");
-				if(socket.YCoords > 360 && socket.YCoords < 380 && socket.XCoords > 0 && socket.XCoords < 200){
+				if(socket.YCoords > 360 && socket.YCoords < 380 && socket.XCoords > 0 && socket.XCoords > 200 || socket.XCoords >= 200 && socket.YCoords > 350 && socket.YCoords < 380 ){
 					console.log("Kollision");
 					return;
 				}
@@ -199,7 +204,7 @@ io.sockets.emit("PlayerSpawn", socket.XCoords, socket.YCoords, BenutzerIpName.le
 					PhysikNumber++;
 					if(typeof BenutzerIpName[0] !== 'undefined'){
 					
-					if(OnlineUsers[BenutzerIpName[0]].YCoords == 320 && OnlineUsers[BenutzerIpName[0]].XCoords > 0 && socket.XCoords < 200){
+					if(OnlineUsers[BenutzerIpName[0]].YCoords == 300 && OnlineUsers[BenutzerIpName[0]].XCoords > 0 && socket.XCoords < 200){
 					console.log("Phsyik Schutz");
 					}else if(OnlineUsers[BenutzerIpName[0]].YCoords < 400){
 						//console.log(OnlineUsers[BenutzerIpName[0]].YCoords);
@@ -209,7 +214,7 @@ io.sockets.emit("PlayerSpawn", socket.XCoords, socket.YCoords, BenutzerIpName.le
 						}
 					}
 					if(typeof BenutzerIpName[1] !== 'undefined'){
-						if(OnlineUsers[BenutzerIpName[0]].YCoords == 320 && OnlineUsers[BenutzerIpName[0]].XCoords > 0 && socket.XCoords < 200){
+						if(OnlineUsers[BenutzerIpName[0]].YCoords == 300 && OnlineUsers[BenutzerIpName[0]].XCoords > 0 && socket.XCoords < 200){
 						console.log("Kollision Schutz");
 						}else if(OnlineUsers[BenutzerIpName[1]].YCoords < 400){
 						OnlineUsers[BenutzerIpName[1]].YCoords++;	
