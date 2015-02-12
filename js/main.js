@@ -12,3 +12,4 @@ $(document).ready(function() {
         location.href = "JumpGo";
     });
 });
+
